@@ -6,12 +6,18 @@ var hbs = require('hbs');
 var app = express();
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
+app.use('/public', express.static('public'));
+
+hbs.registerPartials(__dirname + '/views/partials');
 
 app.get('/', function(request, response){
     response.render('index');
 });
 
-app.listen('2143', function cbListener() {
-    
+app.get('/testpass', function(request,response){
+    response.render('passtest', {testpasshb: 'hello from hb'});
+});
+
+app.listen('2143', function cbListener() {    
     console.log('Server started on port 2143');
 });
