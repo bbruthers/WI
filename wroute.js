@@ -1,7 +1,9 @@
 var express = require('express');
-var bodyParser = require('body-parser');
+//var bodyParser = require('body-parser');
+var exrequest = require('request');
 var path = require('path');
 var hbs = require('hbs');
+
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -12,6 +14,19 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 app.get('/', function(request, response){
     response.render('index');
+});
+
+app.get('/weather', function(request, response){
+    var lat = request.query.lat;
+    var lng = request.query.lng;
+
+    if(lat !== null && lng !== null) {
+        var test = exrequest('api.openweathermap.org/')
+    }
+    else {
+        response.render('index');
+    }
+    
 });
 
 app.get('/testpass', function(request,response){
