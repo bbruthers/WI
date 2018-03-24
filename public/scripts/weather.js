@@ -3,11 +3,19 @@ if(navigator.geolocation) {
 }
 
 function success(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
+    var latq = position.coords.latitude;
+    var lngq = position.coords.longitude;
+    
+    var awir = new XMLHttpRequest();
+    
+    awir.open("GET", "http://localhost:2143/weather?lat=latq&lng=lngq", false);
 
-    //document.write(lat + ' ' + lng);
-    document.getElementById('test').innerHTML = lat + ' ' + lng;
+    awir.onreadystatechange = function() {
+        if(awir.readyState == 4 && awir.status == 200) {
+            document.write(awir.responseText);
+        }
+    };
+    awir.send();
 }
 
 function navError(error) {
@@ -27,3 +35,21 @@ function navError(error) {
             break;
     }
 }
+
+/*UploadCoordinate(function(coord){
+    document.write(coord.latitude + ' ' + coord.longitude);
+});
+
+function GetGeoCoords(callback) {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            var returnVal = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+            
+            callback(returnVal);
+        }
+    );
+}
+*/

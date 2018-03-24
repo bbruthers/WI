@@ -1,9 +1,7 @@
 var express = require('express');
 //var bodyParser = require('body-parser');
-var exrequest = require('request');
 var path = require('path');
 var hbs = require('hbs');
-
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -21,7 +19,10 @@ app.get('/weather', function(request, response){
     var lng = request.query.lng;
 
     if(lat !== null && lng !== null) {
-        var test = exrequest('api.openweathermap.org/')
+        var excall = require('./excall');
+        var test = excall.GetWeatherFromService(lat, lng);
+
+        response.send(test);
     }
     else {
         response.render('index');
