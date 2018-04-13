@@ -2,20 +2,34 @@ if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(success, navError);
 }
 
+var awir;
 function success(position) {
     var latq = position.coords.latitude;
     var lngq = position.coords.longitude;
-    
-    var awir = new XMLHttpRequest();
-    
-    awir.open("GET", "http://localhost:2143/weather?lat=latq&lng=lngq", false);
 
-    awir.onreadystatechange = function() {
-        if(awir.readyState == 4 && awir.status == 200) {
-            document.write(awir.responseText);
+    console.log('latq: ' + latq);
+    //document.write(latq + ' ' + lngq);
+    document.getElementById('test').innerHTML = latq + ' ' + lngq;
+    
+    awir = new XMLHttpRequest();
+    awir.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200) {
+            //document.getElementById('readystate = ' + this.readyState + 'status = ' + this.status);
+            document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
         }
-    };
+        else{
+            document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
+        }
+    }
+    awir.open("GET", 'http://localhost:2143/weather?lat=' + latq + '&' + 'lng=' + lngq, true);
+    //awir.addEventListener('load', testListener);
+    //awir.open('GET', 'http://localhost:2143/weather', true);
+
     awir.send();
+}
+
+function testListener() {
+    document.write(this.responseText);
 }
 
 function navError(error) {
@@ -25,31 +39,13 @@ function navError(error) {
         case error.PERMISSION_DENIED:
             msg = "Location permission denied";
             break;
-        
+       
         case error.POSITION_UNAVAILABLE:
             msg = "Location unavailable";
             break;
 
         case error.PERMISSION_DENIED_TIMEOUT:
-        msg = "Permission timeout, be a bit faster there sport"; 
+        msg = "Permission timeout, be a bit faster there sport";
             break;
     }
 }
-
-/*UploadCoordinate(function(coord){
-    document.write(coord.latitude + ' ' + coord.longitude);
-});
-
-function GetGeoCoords(callback) {
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-            var returnVal = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-            };
-            
-            callback(returnVal);
-        }
-    );
-}
-*/

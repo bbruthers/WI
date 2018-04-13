@@ -1,5 +1,5 @@
 var express = require('express');
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 var path = require('path');
 var hbs = require('hbs');
 
@@ -18,16 +18,41 @@ app.get('/weather', function(request, response){
     var lat = request.query.lat;
     var lng = request.query.lng;
 
-    if(lat !== null && lng !== null) {
-        var excall = require('./excall');
-        var test = excall.GetWeatherFromService(lat, lng);
+    if(lat !== undefined || lng != undefined) {
+        //var exrequest = require('request');
+        var rp = require('request-promise');
+        var reqTest = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&' + 'lon=' + lng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45';
 
-        response.send(test);
+        var options = {
+            uri: 'http://api.openweathermap.org/data/2.5/weather',
+            qs: {
+                lat: lat,
+                lon: lng,
+                APPID: '4a6a346b36485dfd7ab43e7e6c54ae45'
+            },
+            headers: {
+                'User-Agent': 'Request-Promise'
+            },
+            json: true
+        };
+
+        rp(options)
+        .then(function(repos) {
+            console.log('reponse: ' + repos);
+            response.
+        })
+        .catch(function(err) {
+            console.log('error: ' + err);
+        });
+
+        /*exrequest.get(reqTest, function (error, response, body) {
+            if(!error) {
+                retTest = body;
+            }
+        });
+
+        console.log(retTest + 'test'); */
     }
-    else {
-        response.render('index');
-    }
-    
 });
 
 app.get('/testpass', function(request,response){

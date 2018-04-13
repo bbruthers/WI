@@ -1,0 +1,77 @@
+var loc = {
+    get_latlong: function(callback) {
+        var self = this,
+            update_loc = function(position) {
+                self.latitude = position.coords.latitude;
+                self.longitude = position.coords.longitude;
+
+                callback(self);
+        };
+
+        navigator.geolocation.getCurrentPosition(update_loc);
+    }
+};
+
+loc.get_latlong(function(loc) {
+    // loc.latitude and loc.longitude are now available
+    document.write('test!');
+    document.write(loc.latitude);
+    document.write(loc.longitude);
+
+    var awir = new XMLHttpRequest();
+    
+    awir.open("GET", "http://localhost:2143/weather?lat=latq&lng=lngq", true);
+
+    awir.onreadystatechange = function() {
+        if(awir.readyState == 4 && awir.status == 200) {
+            document.write(awir.responseText);
+        }
+    };
+    awir.send();
+});
+
+//////
+
+"39.793822999999996"
+"-75.0008386"
+http://api.openweathermap.org/data/2.5/weather?lat=' + geolat + '&' + 'lon=' + geolng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45'
+
+
+app.get('/weather', function(request, response){
+    var lat = request.query.lat;
+    var lng = request.query.lng;
+
+    if(lat !== null && lng !== null) {
+        
+        var exrequest = require('request');
+        var reqTest = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&' + 'lon=' + lng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45';
+        
+        exrequest.get(reqTest, function(error, response, body){
+            if(!error) {
+                return body;
+            }
+            else {
+                return error;
+            }
+        }
+
+        /*exrequest.get(reqTest, (error, response, body) => {
+        if(!error) {
+            return body;
+        }
+        else {
+            return error;
+        }
+    }); */
+        
+        //var excall = require('./excall');
+        //var test = excall.GetWeatherFromService(lat, lng);
+        //console.log(test);
+        //response.send(test);
+    }
+    else {
+        response.render('index');
+        response.end();
+    }
+    
+});
