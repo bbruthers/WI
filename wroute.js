@@ -37,9 +37,12 @@ app.get('/weather', function(request, response){
         };
 
         rp(options)
-        .then(function(repos) {
-            console.log('reponse: ' + repos);
-            response.
+        .then(function(body) {
+            console.log('body: ' + body);
+            response.writeHead(200, {'Content-Type': 'application/json'});
+            response.write(JSON.stringify(body));
+            response.end();
+            
         })
         .catch(function(err) {
             console.log('error: ' + err);

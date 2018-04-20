@@ -16,6 +16,7 @@ function success(position) {
         if(this.readyState == 4 && this.status == 200) {
             //document.getElementById('readystate = ' + this.readyState + 'status = ' + this.status);
             document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
+            document.getElementById('weatherinfo').innerHTML = this.response;
         }
         else{
             document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
