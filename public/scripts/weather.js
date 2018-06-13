@@ -7,19 +7,26 @@ function success(position) {
     var latq = position.coords.latitude;
     var lngq = position.coords.longitude;
 
-    console.log('latq: ' + latq);
+    //console.log('latq: ' + latq);
     //document.write(latq + ' ' + lngq);
-    document.getElementById('test').innerHTML = latq + ' ' + lngq;
+    //document.getElementById('test').innerHTML = latq + ' ' + lngq;
     
     awir = new XMLHttpRequest();
     awir.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200) {
             //document.getElementById('readystate = ' + this.readyState + 'status = ' + this.status);
-            document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
+            //document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
             document.getElementById('weatherinfo').innerHTML = this.response;
+            var resp = JSON.parse(this.response);
+            var weatherData = resp.weatherInfo;
+            var wImg = resp.weatherImage;
+
+            var element = document.getElementById('wim');
+            element.src = 'http://localhost:2143' + wImg;
         }
         else{
-            document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
+            //replace element for error messaging for user.
+            //document.getElementById('ajaxtest').innerHTML = 'readystate = ' + this.readyState + 'status = ' + this.status;
         }
     }
     awir.open("GET", 'http://localhost:2143/weather?lat=' + latq + '&' + 'lng=' + lngq, true);

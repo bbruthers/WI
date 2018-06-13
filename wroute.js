@@ -38,7 +38,54 @@ app.get('/weather', function(request, response){
 
         rp(options)
         .then(function(body) {
-            console.log('body: ' + body);
+            //console.log('body: ' + body);
+            var imgParse = require('./wImgRetriever');
+            var wimg = imgParse.GetWeatherIconFromID(body);
+            var weatherRespObject = {
+                weatherInfo: body,
+                weatherImage: wimg
+            };
+            
+            response.writeHead(200, {'Content-Type': 'application/json'});
+            response.write(JSON.stringify(weatherRespObject));
+
+
+            response.end();
+            
+        })
+        .catch(function(err) {
+            console.log('error: ' + err);
+            response.writeHead(400);
+            response.end();
+        });
+    }
+});
+
+app.get('/weatherfive', function(request, response){
+    var lat = request.query.lat;
+    var lng = request.query.lng;
+
+    if(lat !== undefined || lng != undefined) {
+        //var exrequest = require('request');
+        var rp = require('request-promise');
+        var reqTest = 'http://api.openweathermap.org/data/2.5/forcast?lat=' + lat + '&' + 'lon=' + lng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45';
+       
+        var options = {
+            uri: 'http://api.openweathermap.org/data/2.5/forcast',
+            qs: {
+                lat: lat,
+                lon: lng,
+                APPID: '4a6a346b36485dfd7ab43e7e6c54ae45'
+            },
+            headers: {
+                'User-Agent': 'Request-Promise'
+            },
+            json: true
+        };
+
+        rp(options)
+        .then(function(body) {
+            
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.write(JSON.stringify(body));
             response.end();
@@ -46,15 +93,9 @@ app.get('/weather', function(request, response){
         })
         .catch(function(err) {
             console.log('error: ' + err);
+            response.writeHead(400);
+            response.end();
         });
-
-        /*exrequest.get(reqTest, function (error, response, body) {
-            if(!error) {
-                retTest = body;
-            }
-        });
-
-        console.log(retTest + 'test'); */
     }
 });
 
