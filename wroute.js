@@ -21,14 +21,14 @@ app.get('/weather', function(request, response){
     if(lat !== undefined || lng != undefined) {
         //var exrequest = require('request');
         var rp = require('request-promise');
-        var reqTest = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&' + 'lon=' + lng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45';
+        var reqTest = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&' + 'lon=' + lng + '&APPID=';
 
         var options = {
             uri: 'http://api.openweathermap.org/data/2.5/weather',
             qs: {
                 lat: lat,
                 lon: lng,
-                APPID: '4a6a346b36485dfd7ab43e7e6c54ae45'
+                APPID: ''
             },
             headers: {
                 'User-Agent': 'Request-Promise'
@@ -48,8 +48,6 @@ app.get('/weather', function(request, response){
             
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.write(JSON.stringify(weatherRespObject));
-
-
             response.end();
             
         })
@@ -68,7 +66,7 @@ app.get('/weatherfive', function(request, response){
     if(lat !== undefined || lng != undefined) {
         //var exrequest = require('request');
         var rp = require('request-promise');
-        var reqTest = 'http://api.openweathermap.org/data/2.5/forcast?lat=' + lat + '&' + 'lon=' + lng + '&APPID=4a6a346b36485dfd7ab43e7e6c54ae45';
+        var reqTest = 'http://api.openweathermap.org/data/2.5/forcast?lat=' + lat + '&' + 'lon=' + lng + '&APPID=';
        
         var options = {
             uri: 'http://api.openweathermap.org/data/2.5/forcast',
